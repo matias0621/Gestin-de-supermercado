@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 public class Gestion_supermercado {
     static Administrador admin =new Administrador("12345678","admin","groso");
 
-    public static void main(String[] args) {
+    public static void iniciar() {
 
         Scanner scanner = new Scanner(System.in);
         Gestion_empleados gestionEmpleados = new Gestion_empleados();
@@ -13,7 +13,14 @@ public class Gestion_supermercado {
         Gestion_ventas gestionVentas = new Gestion_ventas();
         Gestion_clientes gestionClientes = new Gestion_clientes();
 
-        System.out.println("Bienvenido al Supermercado Luna");
+
+        System.out.println();
+        System.out.println("*************************************************");
+        System.out.println("*                                               *");
+        System.out.println("*         BIENVENIDO AL SUPERMERCADO LUNA       *");
+        System.out.println("*                                               *");
+        System.out.println("*************************************************");
+        System.out.println();
         System.out.println("Seleccione su rol para iniciar sesión:");
         System.out.println("1. Administrador");
         System.out.println("2. Empleado");
@@ -71,22 +78,26 @@ public class Gestion_supermercado {
         System.out.println("Inicio de sesion exitoso. Hora: " + horaInicio);
         System.out.println("Bienvenido, " + empleado.getNombre() + " " + empleado.getApellido());
 
-        if (empleado instanceof Cajero) {
-            iniciarSesionCajero((Cajero) empleado);
+        if (empleado instanceof Cajero || empleado.getCargo().equalsIgnoreCase("cajero")) {
+            iniciarSesionCajero(empleado);
         } else {
             System.out.println("No tiene tareas específicas asignadas.");
+            System.exit(0);
         }
     }
 
-    private static void iniciarSesionCajero(Cajero cajero) {
+    private static void iniciarSesionCajero(Empleado empleado) {
         Scanner scanner = new Scanner(System.in);
-
-        System.out.println("Cajero: " + cajero.getNombre() + " " + cajero.getApellido());
-        System.out.println("Ingrese 'cerrar' para cerrar la caja:");
-        String comando = scanner.nextLine();
-
-        if (comando.equalsIgnoreCase("cerrar")) {
-            cajero.cerrarCaja();
+        Cajero cajero = new Cajero(empleado.getNombre(), empleado.getApellido(), empleado.getDni(), empleado.getCargo(), empleado.getSalarioHora());
+        System.out.println("Bienvenido");
+        System.out.println(empleado.getNombre() + " " + empleado.getApellido());
+        boolean continuar = true;
+        while (continuar) {
+            try{
+                cajero.mostrarMenuCajero();
+            }catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 }

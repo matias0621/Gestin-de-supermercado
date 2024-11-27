@@ -8,8 +8,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class Gestion_empleados {
     private Map<String, Empleado> empleados; // Mapa para almacenar empleados por DNI
@@ -21,6 +20,15 @@ public class Gestion_empleados {
     }
 
     public void agregarEmpleado(Empleado empleado) {
+        if (!empleados.containsKey(empleado.getDni())) {
+            empleados.put(empleado.getDni(), empleado);
+            guardarEmpleadosEnArchivo();
+            System.out.println("Empleado agregado correctamente.");
+        } else {
+            System.out.println("El empleado con DNI " + empleado.getDni() + " ya está registrado.");
+        }
+    }
+    public void agregarEmpleado(Cajero empleado) {
         if (!empleados.containsKey(empleado.getDni())) {
             empleados.put(empleado.getDni(), empleado);
             guardarEmpleadosEnArchivo();
@@ -46,7 +54,14 @@ public class Gestion_empleados {
             System.out.println("No hay empleados registrados.");
         } else {
             for (Empleado empleado : empleados.values()) {
-                System.out.println(empleado);
+                System.out.println("------------------------------------------------");
+                System.out.println("ID: " + empleado.getId());
+                System.out.println("DNI: " + empleado.getDni());
+                System.out.println("Nombre: " + empleado.getNombre());
+                System.out.println("Apellido: " + empleado.getApellido());
+                System.out.println("Cargo: " + empleado.getCargo());
+                System.out.println("Salario: " + empleado.getSalarioHora());
+                System.out.println("------------------------------------------------");
             }
         }
     }
@@ -69,16 +84,16 @@ public class Gestion_empleados {
         }
         try (FileWriter file = new FileWriter(archivoJson)) {
             file.write(arrayEmpleados.toString(4));
-            System.out.println("Clientes guardados en " + archivoJson);
+            System.out.println("Empleado guardado en " + archivoJson);
         } catch (IOException e) {
-            System.err.println("Error al guardar los clientes: " + e.getMessage());
+            System.err.println("Error al guardar el empleado: " + e.getMessage());
         }
     }
 
     private void cargarEmpleadosDesdeArchivo() {
             File file = new File(archivoJson);
             if (!file.exists()) {
-                System.out.println("El archivo de clientes no existe, se creará uno nuevo");
+                System.out.println("El archivo de empleados no existe, se creará uno nuevo luego");
                 return;
             }
             try {
@@ -89,10 +104,36 @@ public class Gestion_empleados {
                     Empleado empleado = new Empleado(jsonEmpleado);
                     empleados.put(empleado.getDni(), empleado);
                 }
-                System.out.println("Clientes cargados desde el archivo");
+                System.out.println("Empleados cargados desde el archivo");
             } catch (Exception e) {
-                System.err.println("Error al cargar los clientes: " + e.getMessage());
+                System.err.println("Error al cargar los Empleados: " + e.getMessage());
             }
+    }
+
+    public void ordenarPorNombre(boolean ascendente) {
+        // Clonar la lista de productos a partir de los valores del mapa
+        List<Empleado> empleadosOrdenados = new ArrayList<>(empleados.values());
+
+        // Ordenar por nombre usando un comparador anonimo
+        Collections.sort(empleadosOrdenados, new Comparator<Empleado>() {
+            @Override
+            public int compare(Empleado e1, Empleado e2) {
+                return ascendente
+                        ? e1.getNombre().compareToIgnoreCase(e2.getNombre())
+                        : e2.getNombre().compareToIgnoreCase(e1.getNombre());
+            }
+        });
+
+        for (int i = 0; i < empleadosOrdenados.size(); i++) {
+            System.out.println("-------------------------------------------------");
+            System.out.println(empleadosOrdenados.get(i).getId());
+            System.out.println(empleadosOrdenados.get(i).getNombre());
+            System.out.println(empleadosOrdenados.get(i).getApellido());
+            System.out.println(empleadosOrdenados.get(i).getCargo());
+            System.out.println(empleadosOrdenados.get(i).getDni());
+            System.out.println(empleadosOrdenados.get(i).getSalarioHora());
+            System.out.println("-------------------------------------------------");
+        }
     }
 
 }

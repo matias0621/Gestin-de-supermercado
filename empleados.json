@@ -1,0 +1,18 @@
+[
+    {
+        "apellido": "El mas capo",
+        "salario": 500000,
+        "id": 1,
+        "cargo": "Repositor",
+        "nombre": "Pepe",
+        "dni": "75395148"
+    },
+    {
+        "apellido": "Perez",
+        "salario": 100000,
+        "id": 1,
+        "cargo": "cajero",
+        "nombre": "Franco",
+        "dni": "35789632"
+    }
+]

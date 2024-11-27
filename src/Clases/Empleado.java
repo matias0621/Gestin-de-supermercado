@@ -43,6 +43,10 @@ public class Empleado extends Persona{
         return salario;
     }
 
+    public void setSalario(double salario) {
+        this.salario = salario;
+    }
+
     @Override
     public String toString() {
         return super.toString() +
@@ -50,13 +54,9 @@ public class Empleado extends Persona{
                 ", salario=" + salario;
     }
 
-    public double calcularSalario() { //MODIFICARSE SEGUN EMPLEADO
-        return salario;
-    }
-
     @Override
     public JSONObject toJSON() {
-        JSONObject jsonObject = super.toJSON(); // Llamar al método toJSON de la clase padre
+        JSONObject jsonObject = super.toJSON(); // Llamar al metodo toJSON de la clase padre
         try {
             jsonObject.put("id", id);
             jsonObject.put("cargo", cargo);
